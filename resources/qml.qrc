@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/Main.qml</file>
+        <file>qml/pages/ClusterPage.qml</file>
+        <file>qml/gauges/SpeedGauge.qml</file>
+        <file>qml/gauges/TachGauge.qml</file>
+        <file>qml/gauges/GearDisplay.qml</file>
+        <file>qml/indicators/AdasPanel.qml</file>
+        <file>qml/indicators/MediaPanel.qml</file>
+        <file>qml/indicators/TellTales.qml</file>
+        <file>qml/components/CircularGauge.qml</file>
+        <file>qml/components/IndicatorLight.qml</file>
+        <file>qml/components/WarningPopup.qml</file>
+        <file>qml/themes/ThemeManager.qml</file>
+    </qresource>
+</RCC>

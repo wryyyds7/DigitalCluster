@@ -1,0 +1,53 @@
+VERSION ""
+
+NS_ :
+    NS_DESC_CM_
+    NS_DESC BA_
+    NS_BU_
+    NS_BO_
+    NS_SG_
+    NS_EV_
+
+BS_:
+
+BU_: EngineECU TransECU AdasECU BodyECU Cluster
+
+BO_ 256 EngineStatus: 8 EngineECU
+ SG_ EngineRPM : 0|16@1+ (0.25,0) [0|8000] "rpm" Cluster
+ SG_ CoolantTemp : 16|8@1+ (1,-40) [-40|215] "°C" Cluster
+ SG_ FuelLevel : 24|8@1+ (0.4,0) [0|100] "%" Cluster
+ SG_ OilPressure : 32|16@1+ (1,0) [0|1000] "kPa" Cluster
+ SG_ EngineRunning : 48|1@1+ (1,0) [0|1] "" Cluster
+ SG_ CheckEngine : 49|1@1+ (1,0) [0|1] "" Cluster
+
+BO_ 512 TransmissionStatus: 8 TransECU
+ SG_ Gear : 0|8@1- (1,0) [-1|8] "" Cluster
+ SG_ VehicleSpeed : 8|16@1+ (0.01,0) [0|400] "km/h" Cluster
+ SG_ TransmissionTemp : 24|8@1+ (1,-40) [-40|215] "°C" Cluster
+ SG_ UpShiftIndicator : 32|1@1+ (1,0) [0|1] "" Cluster
+ SG_ DownShiftIndicator : 33|1@1+ (1,0) [0|1] "" Cluster
+
+BO_ 768 AdasStatus: 8 AdasECU
+ SG_ FCW_Active : 0|1@1+ (1,0) [0|1] "" Cluster
+ SG_ LDW_Active : 1|1@1+ (1,0) [0|1] "" Cluster
+ SG_ AEB_Active : 2|1@1+ (1,0) [0|1] "" Cluster
+ SG_ BSM_Active : 3|1@1+ (1,0) [0|1] "" Cluster
+ SG_ FCW_Level : 8|8@1+ (1,0) [0|3] "" Cluster
+ SG_ LDW_Direction : 16|8@1+ (1,0) [0|2] "" Cluster
+ SG_ DistanceToVehicle : 24|16@1+ (1,0) [0|65535] "cm" Cluster
+ SG_ SpeedLimit : 40|8@1+ (1,0) [0|255] "km/h" Cluster
+
+BO_ 1024 BodyStatus: 8 BodyECU
+ SG_ LeftTurnSignal : 0|1@1+ (1,0) [0|1] "" Cluster
+ SG_ RightTurnSignal : 1|1@1+ (1,0) [0|1] "" Cluster
+ SG_ HighBeam : 2|1@1+ (1,0) [0|1] "" Cluster
+ SG_ Handbrake : 3|1@1+ (1,0) [0|1] "" Cluster
+ SG_ DoorOpen : 4|1@1+ (1,0) [0|1] "" Cluster
+ SG_ SeatbeltUnfastened : 5|1@1+ (1,0) [0|1] "" Cluster
+ SG_ AmbientLight : 8|8@1+ (1,0) [0|255] "lux" Cluster
+ SG_ InteriorTemp : 16|8@1+ (1,-40) [-40|215] "°C" Cluster
+
+BO_ 1280 ClusterInfo: 8 Cluster
+ SG_ Odometer : 0|32@1+ (1,0) [0|4294967295] "km" Cluster
+ SG_ TripA : 32|16@1+ (0.1,0) [0|6553.5] "km" Cluster
+ SG_ AmbientTemp : 48|8@1+ (1,-40) [-40|215] "°C" Cluster
