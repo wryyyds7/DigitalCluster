@@ -71,8 +71,8 @@ void WatchdogProcess::onClientDisconnected()
 {
     std::cerr << "[Watchdog] Main process disconnected!\n";
     m_clientConnected = false;
+    m_client = nullptr;
     m_safetyMode = true;
-    // 断连立即进入安全模式
     std::cout << "[Watchdog] SAFETY MODE activated (connection lost)\n";
 }
 
@@ -82,22 +82,22 @@ void WatchdogProcess::onHeartbeatTimeout()
 
     auto elapsed = m_lastHeartbeat.msecsTo(QDateTime::currentDateTime());
     if (elapsed > 500 && !m_safetyMode) {
-        // 心跳超时 > 500ms → 进入安全模式
         m_safetyMode = true;
+        m_safetyPrinted = false;
         std::cout << "[Watchdog] SAFETY MODE activated (heartbeat timeout: "
                   << elapsed << "ms)\n";
     } else if (elapsed <= 500 && m_safetyMode) {
-        // 心跳恢复 → 退出安全模式
         m_safetyMode = false;
+        m_safetyPrinted = false;
         std::cout << "[Watchdog] Safety mode cleared, main process recovered\n";
     }
 
-    if (m_safetyMode) {
-        // 输出安全模式信息（实际场景中这里会弹出一个最小化的 QML 窗口）
+    if (m_safetyMode && !m_safetyPrinted) {
         std::cout << "[Watchdog] SAFETY DISPLAY: Speed=" << m_safeSpeed
                   << " km/h, L=" << (m_safeLeftTurn ? "ON" : "OFF")
                   << ", R=" << (m_safeRightTurn ? "ON" : "OFF")
                   << " | SYSTEM ERROR - SAFETY MODE\n";
+        m_safetyPrinted = true;
     }
 }
 

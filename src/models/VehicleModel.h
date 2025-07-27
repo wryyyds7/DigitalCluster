@@ -7,7 +7,6 @@
 #include <QObject>
 #include <QTimer>
 #include <memory>
-#include <functional>
 #include <chrono>
 #include <unordered_map>
 

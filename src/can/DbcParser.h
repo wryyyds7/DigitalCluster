@@ -6,7 +6,6 @@
 #include <unordered_map>
 #include <vector>
 #include <functional>
-#include <variant>
 
 /**
  * @brief DBC 信号定义

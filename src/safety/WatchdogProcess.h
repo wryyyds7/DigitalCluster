@@ -52,4 +52,5 @@ private:
     bool          m_safeLeftTurn = false;
     bool          m_safeRightTurn = false;
     bool          m_safetyMode = false;
+    bool          m_safetyPrinted = false;
 };
