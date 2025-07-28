@@ -11,6 +11,7 @@
 #include "models/VehicleModel.h"
 #include "viewmodels/ClusterViewModel.h"
 #include "safety/HeartbeatSender.h"
+#include "can/IpcCanReceiver.h"
 
 int main(int argc, char* argv[])
 {
@@ -53,6 +54,7 @@ int main(int argc, char* argv[])
 
     // 解析命令行参数选择 CAN 后端
     std::string canChannel = "virtual";
+    std::string ipcSocket;
     bool autoSim = true;
 
     for (int i = 1; i < argc; ++i) {
@@ -60,12 +62,20 @@ int main(int argc, char* argv[])
         if (arg == "--channel" && i + 1 < argc) {
             canChannel = argv[++i];
         }
+        if (arg == "--ipc" && i + 1 < argc) { ipcSocket = argv[++i]; }
         if (arg == "--no-sim") {
             autoSim = false;
         }
     }
 
-    if (!model.initialize(canChannel, autoSim)) {
+    // IPC 模式：使用 IpcCanReceiver 连接 SignalGateway
+    if (!ipcSocket.empty()) {
+        model.setCanInterface(std::make_unique<IpcCanReceiver>());
+        if (!model.initialize(ipcSocket, false)) {
+            std::cerr << "Failed to connect to signal gateway at " << ipcSocket << std::endl;
+            return -1;
+        }
+    } else if (!model.initialize(canChannel, autoSim)) {
         std::cerr << "Failed to initialize CAN interface\n";
         return -1;
     }
