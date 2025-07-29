@@ -11,7 +11,9 @@
 #include "models/VehicleModel.h"
 #include "viewmodels/ClusterViewModel.h"
 #include "safety/HeartbeatSender.h"
+#ifndef _WIN32
 #include "can/IpcCanReceiver.h"
+#endif
 
 int main(int argc, char* argv[])
 {
@@ -68,13 +70,18 @@ int main(int argc, char* argv[])
         }
     }
 
-    // IPC 模式：使用 IpcCanReceiver 连接 SignalGateway
+    // IPC 模式：使用 IpcCanReceiver 连接 SignalGateway（仅 Unix 平台）
     if (!ipcSocket.empty()) {
+#ifndef _WIN32
         model.setCanInterface(std::make_unique<IpcCanReceiver>());
         if (!model.initialize(ipcSocket, false)) {
             std::cerr << "Failed to connect to signal gateway at " << ipcSocket << std::endl;
             return -1;
         }
+#else
+        std::cerr << "IPC mode is not supported on Windows\n";
+        return -1;
+#endif
     } else if (!model.initialize(canChannel, autoSim)) {
         std::cerr << "Failed to initialize CAN interface\n";
         return -1;
@@ -111,7 +118,7 @@ int main(int argc, char* argv[])
     // 注册 ViewModel 到 QML 上下文
     engine.rootContext()->setContextProperty("clusterVM", &viewModel);
 
-    engine.load(QUrl(QStringLiteral("qrc:/qml/Main.qml")));
+    engine.load(QUrl(QStringLiteral("qrc:/qt/qml/DigitalCluster/qml/Main.qml")));
 
     if (engine.rootObjects().isEmpty()) {
         std::cerr << "Failed to load QML\n";

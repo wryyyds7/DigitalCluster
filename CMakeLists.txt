@@ -33,14 +33,17 @@ file(GLOB_RECURSE CLUSTER_SOURCES CONFIGURE_DEPENDS
 list(REMOVE_ITEM CLUSTER_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/safety/main_watchdog.cpp"
 )
-
-# ── QML 资源 ────────────────────────────────────────────────
-set(QML_QRC ${CMAKE_CURRENT_SOURCE_DIR}/resources/qml.qrc)
+# 排除 POSIX 专属文件（Windows 不支持 Unix Domain Socket）
+if(WIN32)
+    list(REMOVE_ITEM CLUSTER_SOURCES
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/can/IpcCanReceiver.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/can/IpcCanReceiver.h"
+    )
+endif()
 
 # ── 主进程可执行文件 ────────────────────────────────────────
 qt_add_executable(DigitalCluster
     ${CLUSTER_SOURCES}
-    ${QML_QRC}
 )
 
 qt_add_qml_module(DigitalCluster
