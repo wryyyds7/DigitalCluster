@@ -160,6 +160,17 @@ IPC 方案：`QLocalServer` / `QLocalSocket`（命名管道），心跳数据以
 - C++17 编译器
 - Python 3 (可选，运行 CAN 模拟器脚本)
 
+### openEuler 支持
+
+项目兼容 openEuler 22.03 LTS，安装 Qt6 后即可编译：
+
+```bash
+sudo dnf install gcc gcc-c++ cmake make qt6-qtbase-devel qt6-qtdeclarative-devel qt6-qtquickcontrols2-devel
+mkdir build && cd build
+cmake ..
+make -j$(nproc)
+```
+
 ### 构建
 
 ```bash
